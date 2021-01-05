@@ -7,39 +7,56 @@ The goal of Want2Go is to provide a more intuitive and 'computationally kind' wa
 The target demographic are adults, between 18-35 years old.
 
 ## Data:
-I plan on using the Yelp Fusion API. The API provides all of the necessary information for restaurants, photos, addresses, business hours.
+I plan on using the Google Places API. The API provides all of the necessary information for restaurants, photos, addresses, business hours.
 
 ## Approach:
 Currently, my database schema only has a Users, Areas, and restaurants table. I may need to add an additional relationship type table, in order to keep the database schema in 3NF or BCNF. I do not foresee any issues with the API I have chosen. The only issues that may come up are from my implementation of this application. The only sensitive information that I will need to store is the password. 
 
 
 ## Initial Schema Design:
-### user_accounts table
+### users table
 |    | user_account |   | 
 |----|--------------|---| 
 | PK | id           |   | 
 |    | name         |   | 
 |    | email        |   | 
+|    | password     |   | 
+| FK | likes_id     |   | 
+| FK | dislikes_id  |   | 
+| FK | areas_id     |   | 
 
-### interested_in_relation table
-|        | interested_in_relation |   |
-|--------|------------------------|---|
-| PK,FK1 | user_account_id        |   |
-| PK,FK2 | restaurant_id          |   |
-|        | area_id                |   |
-|        | relation_type          |   |
+### likes
+|    | likes          |   |
+|----|----------------|---|
+| PK | id             |   |
+| FK | user_id        |   |
+| FK | restaurant_id  |   |
 
-### restaurants table
-|    | restaurant |   |
-|----|------------|---|
-| PK | id         |   |
-|    | name       |   |
+### dislikes
+|    | dislikes       |   |
+|----|----------------|---|
+| PK | id             |   |
+| FK | user_id        |   |
+| FK | restaurant_id  |   |
 
-### areas table
+### areas
 |    | area    |   |
 |----|---------|---|
 | PK | id      |   |
-|    | zipcode?|   |
+|    | zipcode |   |
+|    | city    |   |
+| FK | user_id |   |
+
+### restaurants
+|    | restaurants       |   |
+|----|-------------------|---|
+| PK | id                |   |
+|    | name              |   |
+|    | location          |   |
+|    | description       |   |
+|    | google_place_id   |   |
+|    | fetched_timestamp |   |
+
 
 ## User Flow:
 
