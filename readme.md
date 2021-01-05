@@ -23,7 +23,7 @@ Currently, my database schema only has a Users, Areas, and restaurants table. I 
 |    | password     |   | 
 | FK | likes_id     |   | 
 | FK | dislikes_id  |   | 
-| FK | areas_id     |   | 
+| FK | areas_id     |   |
 
 ### likes
 |    | likes          |   |
