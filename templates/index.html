@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}want2go{% endblock %}
+
+{% block content %}
+
+<div class="container ">
+    <h1 class="text-center my-5">want2go</h1>
+    {% for msg in get_flashed_messages()%}
+    <p class="alert alert-info">
+      {{msg}}
+    </p>
+    {% endfor %}
+    <div class="row align-items-center justify-content-center my-4">
+    <p>this is a test</p>
+    </div>
+
+    
+</div>
+
+
+{% endblock %}
