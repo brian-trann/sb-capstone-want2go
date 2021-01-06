@@ -52,21 +52,20 @@ Currently, my database schema only has a Users, Areas, and restaurants table. I 
 |----|-------------------|---|
 | PK | id                |   |
 |    | name              |   |
-|    | location          |   |
+|    | address           |   |
+|    | city              |   |
+|    | state             |   |
 |    | description       |   |
 |    | google_place_id   |   |
 |    | fetched_timestamp |   |
 
 
-## User Flow:
+## User Flow & Sequence Diagrams:
 
-* Log In/ Create account
-* Restaurant
-* Restaurant - detailed
-* Likes
-* Dislikes
-* Areas
-* Settings
+* Basic user flows are in /assets 
+  * Does not include:
+    * Account settings
+    * "Areas" tab
 
 ## Future goals:
 * additional toggle switches for users to specify restaurant search: corporate/non corporate, open now, etc.
