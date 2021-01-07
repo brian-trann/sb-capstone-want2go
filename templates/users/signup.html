@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}want2go{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-md-center my-5">
+    <div class="col-md-7 col-lg-5">
+      <h2 class="join-message">Join today!</h2>
+      <form method="POST" class="my-3" id="user_form">
+        {{ form.hidden_tag() }}
+  
+        {% for field in form if field.widget.input_type != 'hidden' %}
+          {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+          {{field.label}}
+          {{ field(placeholder=field.label.text, class="form-control mt-2 mb-3") }}
+        {% endfor %}
+  
+        <button class="btn btn-primary btn-lg btn-block">Sign me up!</button>
+        <a class="btn btn-outline-primary btn-sm btn-block" href="/" role="button">Cancel</a>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
