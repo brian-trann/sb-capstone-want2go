@@ -2,3 +2,5 @@
 /private
 /venv/
 /__pycache__/
+/static/tmp/
+secrets.py

@@ -1,7 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField
-from wtforms.validators import InputRequired, Email, Length
+from wtforms.validators import InputRequired, Email, Length, ValidationError
+import zipcodes
 
+def check_zipcode(form, field:str):
+    if zipcodes.is_real(field.data) == False:
+        raise ValidationError('Zipcode is not valid')
+    
 class UserAddForm(FlaskForm):
     """Form for adding users."""
     name = StringField('Name', validators=[InputRequired()])
@@ -17,6 +22,7 @@ class LoginForm(FlaskForm):
 # Will need to think about making a form for the zipcode input
 class SearchForm(FlaskForm):
     """City or zipcode form"""
-    zipcode = IntegerField('Zipcode', validators=[InputRequired()])
+    zipcode = StringField('Zipcode', validators=[InputRequired(), check_zipcode])
     # https://wtforms.readthedocs.io/en/2.3.x/validators/#wtforms.validators.InputRequired
     # TODO maybe add a custom validator for zipcodes
+

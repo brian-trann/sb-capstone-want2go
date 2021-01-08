@@ -3,3 +3,13 @@
     margin-right: 1.5em;
     margin-bottom: 1.5em;
 }
+.fas{
+    color: #78c2ad;
+    text-shadow:3px 3px rgba(128, 128, 128, 0.2)
+}
+
+
+
+.carousel-control-prev-35{
+    width: 30%;
+}
