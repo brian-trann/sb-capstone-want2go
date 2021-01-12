@@ -4,31 +4,11 @@
 
 {% block content %}
 
-  {% if areas %}
-<div class="row justify-content-md-center my-5">
-    <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">City</th>
-            <th scope="col">State</th>
-            <th scope="col">Zipcode</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-            {% for area in areas %}  
-            <tr class="area-id" data-id="{{area.id}}" data-href="/discover/restaurants/{{area.id}}">
-                <td>{{area.city}}</td>
-                <td>{{area.state}}</td>
-                <td>{{area.zipcode}}</td>
-                <td><a class="btn btn-sm btn-danger" href="/areas/{{area.id}}/delete">X</a></td>
-            </tr>
-            {% endfor %}
-          
-        </tbody>
-      </table>
-  </div>
-  {% endif %}
+
+<div class="row justify-content-md-center my-5" id="areas-table">
+
+</div>
+
 <div class="row justify-content-md-center my-5">
     <form method="POST" class="my-3" id="search">
         <p class="h4 my-3">Add an area!</p>

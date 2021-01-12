@@ -97,6 +97,17 @@ class Area(db.Model):
     state = db.Column(db.Text,nullable=False)
     latitude = db.Column(db.Text,nullable=False)
     longitude = db.Column(db.Text,nullable=False)
+
+    def serialize(self):
+        """Returns a dict representation of an area"""
+        return {
+            "id":self.id,
+            "zipcode":self.zipcode,
+            "city":self.city,
+            "state":self.state,
+            "latitude":self.latitude,
+            "longitude":self.longitude,
+        }
     
 
 class UserAreas(db.Model):

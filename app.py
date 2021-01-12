@@ -1,5 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect, session, g, flash, jsonify
+from api import api
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import UserAddForm, LoginForm, SearchForm
 from models import db, User,Likes, Dislikes, Restaurant, Area, UserAreas
@@ -12,10 +13,11 @@ import zipcodes
 from models import db, connect_db
 
 CURR_USER_KEY = "curr_user"
-CURR_USER_AREA = ''
+CURR_USER_AREA = 'curr_area'
 
 
 app = Flask(__name__)
+app.register_blueprint(api,url_prefix="/api")
 # db.create_all()
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
@@ -131,19 +133,16 @@ def discover_restaurants():
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
-    if session[CURR_USER_AREA] == '':
+    if CURR_USER_AREA not in session:
         flash("Pick an area first!", 'success')
         return redirect('/areas')
-    elif CURR_USER_AREA in session:
-        area = Area.query.get_or_404(session[CURR_USER_AREA])
+    # elif CURR_USER_AREA in session:
+    #     area = Area.query.get_or_404(session[CURR_USER_AREA])
     
-    response = place_search_request(latitude=area.latitude,longitude=area.longitude,key=PRIVATE_API_KEY)
-    handleSearchResponse(response)
-    # if len(session['place_ids']) < 0:
-    ### make a place_details_request with first element in session['place_ids']
-    # make this a json response instead of returning an HTML template. 
-    #split out the API and the actual APP. it'll call this route, and get the info.
-    return render_template('/restaurants/restaurants.html',area=area)
+    # response = place_search_request(latitude=area.latitude,longitude=area.longitude,key=PRIVATE_API_KEY)
+    # handleSearchResponse(response)
+
+    return render_template('/restaurants/restaurants.html')
 
 
 @app.route('/discover/restaurants/<int:area_id>')
@@ -186,7 +185,7 @@ def show_areas():
         g.user.areas.append(area)
         db.session.commit()
         return redirect(f'/discover/restaurants/{area.id}')
-    return render_template('/areas/areas.html',areas=user.areas,form=form)
+    return render_template('/areas/areas.html',form=form)
 
 @app.route('/areas/<int:area_id>/delete')
 def delete_area(area_id):
@@ -198,7 +197,7 @@ def delete_area(area_id):
     db.session.commit()
     return redirect('/areas')
 
-def handleSearchResponse(response):
-    """Handles response from Google Search API, adds to session"""
-    session['place_ids'] = response['place_ids']
-    session['next_page_token'] = response['next_page_token']
+# def handleSearchResponse(response):
+#     """Handles response from Google Search API, adds to session"""
+#     session['place_ids'] = response['place_ids']
+#     session['next_page_token'] = response['next_page_token']
