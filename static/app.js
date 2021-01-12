@@ -17,15 +17,15 @@ const hideZipcodeSearchForm = () => {
 
 const toggleDetailedView = () => {
 	// Will toggle if you click anywhere in Card
-	$('.carousel').toggle();
-	$('.card').toggle();
+	$('.restaurant-detailed').toggle();
+	$('.restaurant-normal').toggle();
 };
 
-$('.restaurant-normal').on('click', function() {
-	console.log('restaurant-normal click');
-	// toggleDetailedView()
+$('.area-id').on('click', function() {
+	// console.log($(this).data('id'));
+	window.location = $(this).data('href');
 });
-$('.carousel').on('click', function() {
-	$('.carousel').carousel('next');
-	// $('.carousel-control-prev-35')
+
+$('.restaurant-normal').on('click', function() {
+	// toggleDetailedView();
 });

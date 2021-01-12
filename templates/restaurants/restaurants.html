@@ -3,9 +3,9 @@
 {% block title %}want2go{% endblock %}
 
 {% block content %}
-
-<div class="row justify-content-md-center my-5">
-    
+<p class="mt-5 h5">You're searching in {{area.city}}</p>
+<p class="mt-5 h5">In the session 'place_ids' {{ session['place_ids'] }}</p>
+<div class="row justify-content-md-center my-3">
     <div class="card restaurant-normal" style="width: 70%">
         <img src="/static/tmp/pizza.png" class="card-img-top img-responsive" alt="...">
         <div class="card-body">
@@ -15,9 +15,8 @@
         </div>
     </div>
 </div>
-<p>later: add style="display: none;" to .carousel for toggle to work</p>
-<div class="carousel-container border card rounded my-5 restaurant-detailed" >
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+<div class="carousel-container border card rounded restaurant-detailed" style="display:none;">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" >
         <ol class="carousel-indicators">
           <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
           <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -52,7 +51,7 @@
 </div>
 
 
-  <div class="d-flex justify-content-center fas-container">
+  <div class="d-flex justify-content-center fas-container mt-3">
       <a href="#"><i class="fas fa-times display-3 px-4"></i></a>
       <a href="#"><i class="fas fa-heart display-3 px-4"></i></a>
       

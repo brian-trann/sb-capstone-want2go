@@ -20,9 +20,10 @@ class User(db.Model):
     email = db.Column(db.Text,nullable=False,unique=True)
     password = db.Column(db.Text,nullable=False)
 
+    #direct nav: user -> likes & back
     likes = db.relationship('Restaurant', secondary="likes")
     dislikes = db.relationship('Restaurant', secondary="dislikes")
-    areas = db.relationship('Area',secondary="areas")
+    areas = db.relationship('Area', secondary="users_areas", backref="users") #think about this line.
 
     def __repr__(self):
         return f"<User #{self.id}: {self.name}, {self.email}>"
@@ -57,35 +58,50 @@ class Likes(db.Model):
     """Mapping user likes to restaurants"""
     __tablename__ = "likes"
     id = db.Column(db.Integer,primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id', ondelete='cascade'))
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id', ondelete='cascade'),unique=True)
-    
-    user = db.relationship('User')
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id', ondelete='cascade'))
+    restaurant_id = db.Column(db.Integer, 
+                                db.ForeignKey('restaurants.id', ondelete='cascade'))
 
 class Dislikes(db.Model):
     """Mapping user dislikes to restaurants"""
     __tablename__ = "dislikes"
     id = db.Column(db.Integer,primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('users.id', ondelete='cascade'))
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id', ondelete='cascade'),unique=True)
-    
-    user = db.relationship('User')
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.id', ondelete='cascade'))
+    restaurant_id = db.Column(db.Integer, 
+                                db.ForeignKey('restaurants.id', ondelete='cascade'))
 
 class Restaurant(db.Model):
     """An individule restaurant"""
     __tablename__ = "restaurants"
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer,primary_key=True, autoincrement=True)
     name = db.Column(db.Text,nullable=False)
     address = db.Column(db.Text,nullable=False)
     description = db.Column(db.Text,nullable=False)
     city = db.Column(db.Text,nullable=False)
     state = db.Column(db.Text,nullable=False)
     google_place_id = db.Column(db.Text,nullable=False)
+    user_id = db.Column(db.Integer,
+        db.ForeignKey('users.id', ondelete='CASCADE'),
+        nullable=False,
+    )
+    user = db.relationship('User')
 
 class Area(db.Model):
-    """An area a user swipes in"""
+    """Areas where a user swipes in"""
     __tablename__ = "areas"
-    id = db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     zipcode = db.Column(db.Integer,nullable=False)
-
+    city = db.Column(db.Text,nullable=False)
+    state = db.Column(db.Text,nullable=False)
+    latitude = db.Column(db.Text,nullable=False)
+    longitude = db.Column(db.Text,nullable=False)
     
+
+class UserAreas(db.Model):
+    """Mapping of a user's areas"""
+    __tablename__ = "users_areas"
+    id = db.Column(db.Integer,primary_key=True, autoincrement=True)
+    area_id = db.Column(db.Integer, db.ForeignKey("areas.id", ondelete='CASCADE'))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
