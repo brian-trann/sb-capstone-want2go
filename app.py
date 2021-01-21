@@ -5,8 +5,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 from forms import UserAddForm, LoginForm, SearchForm
 from models import db, User,Likes, Dislikes, Restaurant, Area, UserAreas
 from sqlalchemy.exc import IntegrityError
-from secrets import PRIVATE_API_KEY
-from helpers import place_search_request
 import zipcodes
 
 # from forms import UserAddForm, LoginForm, MessageForm, EditUserForm
@@ -18,6 +16,7 @@ CURR_USER_AREA = 'curr_area'
 
 app = Flask(__name__)
 app.register_blueprint(api,url_prefix="/api")
+
 # db.create_all()
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
@@ -134,15 +133,12 @@ def discover_restaurants():
         flash("Access unauthorized.", "danger")
         return redirect("/")
     if CURR_USER_AREA not in session:
-        flash("Pick an area first!", 'success')
-        return redirect('/areas')
-    # elif CURR_USER_AREA in session:
-    #     area = Area.query.get_or_404(session[CURR_USER_AREA])
-    
-    # response = place_search_request(latitude=area.latitude,longitude=area.longitude,key=PRIVATE_API_KEY)
-    # handleSearchResponse(response)
 
-    return render_template('/restaurants/restaurants.html')
+        return redirect('/areas')
+
+    area = Area.query.get_or_404(session[CURR_USER_AREA])    
+
+    return render_template('/restaurants/restaurants.html',area=area)
 
 
 @app.route('/discover/restaurants/<int:area_id>')
@@ -154,12 +150,12 @@ def discover_restaurant_in_area(area_id):
     return redirect('/discover/restaurants')
 
 
-@app.route('/restaurant/likes')
+@app.route('/likes')
 def restaurant_likes():
-    """Table showing all restaurants??? 
-    TODO IDK about this route yet
-    """
-    return render_template('index.html')
+    """Table showing all restaurants??? """
+    if not g.user:
+        return redirect("/")
+    return render_template('likes.html')
 
 @app.route('/areas', methods=["GET","POST"])
 def show_areas():
@@ -197,7 +193,3 @@ def delete_area(area_id):
     db.session.commit()
     return redirect('/areas')
 
-# def handleSearchResponse(response):
-#     """Handles response from Google Search API, adds to session"""
-#     session['place_ids'] = response['place_ids']
-#     session['next_page_token'] = response['next_page_token']

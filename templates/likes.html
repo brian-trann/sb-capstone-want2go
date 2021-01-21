@@ -3,26 +3,28 @@
 {% block title %}want2go{% endblock %}
 
 {% block content %}
-<p class="mt-5 h5 area-search">You're searching in {{area.city}}, {{area.state}}</p>
-<div class="row justify-content-md-center my-3">
+<p class="mt-5 h5 ">LIKES - UPDATE</p>
+<div class="row justify-content-md-center my-5" id="likes-table">
+
+</div>
+<div class="go-back" style="display: none;">
+    <button class="btn btn-outline-primary"><i class="fas fa-arrow-left"></i> Go Back</button>
+    
+</div>
+<div class="row justify-content-md-center my-3 card-view" style="display: none;">
     <div class="card restaurant-normal" style="width: 70%">
         <img src="/static/loading-200px.gif" class="card-img-top img-responsive restaurant-photo" alt="...">
         <div class="card-body">
           <h5 class="card-title res-name"></h5>
           <p class="card-text res-address"></p>
+          <a href="#" class="btn btn-primary">remove this?</a>
         </div>
     </div>
 </div>
 
 
-  <div class="d-flex justify-content-center fas-container mt-3">
-      <a href="#"><i class="fas fa-times display-3 px-4"></i></a>
-      <a href="#"><i class="fas fa-heart display-3 px-4"></i></a>
-      
-  </div>
-
 {% endblock content %}
 
 {% block extra_scripts %}
-<script src="/static/restaurants.js"></script>
+<script src="/static/likes.js"></script>
 {% endblock %}

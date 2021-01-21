@@ -23,8 +23,7 @@ class User(db.Model):
     #direct nav: user -> likes & back
     likes = db.relationship('Restaurant', secondary="likes")
     dislikes = db.relationship('Restaurant', secondary="dislikes")
-    areas = db.relationship('Area', secondary="users_areas", backref="users") #think about this line.
-
+    areas = db.relationship('Area', secondary="users_areas", backref="users") \
     def __repr__(self):
         return f"<User #{self.id}: {self.name}, {self.email}>"
     
@@ -78,15 +77,30 @@ class Restaurant(db.Model):
     id = db.Column(db.Integer,primary_key=True, autoincrement=True)
     name = db.Column(db.Text,nullable=False)
     address = db.Column(db.Text,nullable=False)
-    description = db.Column(db.Text,nullable=False)
-    city = db.Column(db.Text,nullable=False)
-    state = db.Column(db.Text,nullable=False)
     google_place_id = db.Column(db.Text,nullable=False)
     user_id = db.Column(db.Integer,
         db.ForeignKey('users.id', ondelete='CASCADE'),
         nullable=False,
     )
     user = db.relationship('User')
+    
+    area_id = db.Column(db.Integer,
+        db.ForeignKey('areas.id', ondelete='CASCADE'),
+        nullable=False,
+    )
+    area = db.relationship('Area')
+    
+    def serialize(self):
+        '''Returns a dict representation of restaurant'''
+        return {
+            "id":self.id,
+            "name":self.name,
+            "address":self.address,
+            "google_place_id":self.google_place_id,
+            "area_id":self.area_id,
+            "area_city":self.area.city,
+            "area_state":self.area.state
+        }
 
 class Area(db.Model):
     """Areas where a user swipes in"""
