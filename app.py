@@ -5,19 +5,16 @@ from flask_debugtoolbar import DebugToolbarExtension
 from forms import UserAddForm, LoginForm, SearchForm
 from models import db, User,Likes, Dislikes, Restaurant, Area, UserAreas
 from sqlalchemy.exc import IntegrityError
-import zipcodes
 
-# from forms import UserAddForm, LoginForm, MessageForm, EditUserForm
+
 from models import db, connect_db
 
 CURR_USER_KEY = "curr_user"
 CURR_USER_AREA = 'curr_area'
 
-
 app = Flask(__name__)
 app.register_blueprint(api,url_prefix="/api")
 
-# db.create_all()
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
 app.config['SQLALCHEMY_DATABASE_URI'] = (
@@ -51,9 +48,11 @@ def do_logout():
         del session[CURR_USER_KEY]
 
 def do_set_area(area_id):
+    '''Sets an area ID to the session. This will be used to make a request to place_search_request()'''
     session[CURR_USER_AREA] = area_id
 
 def do_reset_area():
+    '''Removes the area id from the session '''
     if CURR_USER_AREA in session:
         del session[CURR_USER_AREA]
 ##########################################################
@@ -128,12 +127,11 @@ def discover():
 
 @app.route('/discover/restaurants')
 def discover_restaurants():
-    """ If the zipcode is good: make request here. """
+    """ If the city and state is good: make request here. """
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
     if CURR_USER_AREA not in session:
-
         return redirect('/areas')
 
     area = Area.query.get_or_404(session[CURR_USER_AREA])    
@@ -143,6 +141,7 @@ def discover_restaurants():
 
 @app.route('/discover/restaurants/<int:area_id>')
 def discover_restaurant_in_area(area_id):
+    '''This route sets an area in the session where restaurant discoveries will occur '''
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -159,25 +158,27 @@ def restaurant_likes():
 
 @app.route('/areas', methods=["GET","POST"])
 def show_areas():
+    '''Route to show a user's areas '''
     if not g.user:
         return redirect("/")
 
+    user_areas = Area.query.filter(UserAreas.user_id ==g.user.id).all()
     user = User.query.get_or_404(g.user.id)
     form = SearchForm()
-    user_zipcodes = [str(area.zipcode) for area in user.areas]
+    user_cities = [area.serialize() for area in user_areas]
 
     if form.validate_on_submit():
-        user_zipcode = form.zipcode.data
-        if user_zipcode in user_zipcodes:
-            flash('You already added this area','danger')
-            return render_template('/areas/areas.html',form=form,areas=user.areas)
+        city = form.city.data
+        state = form.state.data
+        formatted_city = city.title()
 
-        matched_zip = zipcodes.matching(user_zipcode)
-        latitude = matched_zip[0]['lat']
-        longitude = matched_zip[0]['long']
-        city = matched_zip[0]['city'] 
-        state = matched_zip[0]['state'] 
-        area = Area(zipcode=user_zipcode,city=city,state=state,latitude=latitude,longitude=longitude)
+        for area in user_cities:
+            if area['city'] == formatted_city and area['state'] == state:
+                area_id = area['id']
+                flash('You already added this area!','success')
+                return redirect(f'/discover/restaurants/{area_id}')
+                
+        area = Area(city=formatted_city,state=state)
         g.user.areas.append(area)
         db.session.commit()
         return redirect(f'/discover/restaurants/{area.id}')
@@ -185,6 +186,7 @@ def show_areas():
 
 @app.route('/areas/<int:area_id>/delete')
 def delete_area(area_id):
+    '''Route to delete a user's area'''
     if not g.user:
         return redirect('/')
     area = Area.query.get_or_404(area_id)

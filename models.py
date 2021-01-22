@@ -7,8 +7,6 @@ bcrypt = Bcrypt()
 db = SQLAlchemy()
 def connect_db(app):
     """Connect this database to provided Flask app.
-
-    You should call this in your Flask app.
     """
     db.app = app
     db.init_app(app)
@@ -23,7 +21,7 @@ class User(db.Model):
     #direct nav: user -> likes & back
     likes = db.relationship('Restaurant', secondary="likes")
     dislikes = db.relationship('Restaurant', secondary="dislikes")
-    areas = db.relationship('Area', secondary="users_areas", backref="users") \
+    areas = db.relationship('Area', secondary="users_areas", backref="users")
     def __repr__(self):
         return f"<User #{self.id}: {self.name}, {self.email}>"
     
@@ -106,21 +104,16 @@ class Area(db.Model):
     """Areas where a user swipes in"""
     __tablename__ = "areas"
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    zipcode = db.Column(db.Integer,nullable=False)
+    # zipcode = db.Column(db.Integer,nullable=False)
     city = db.Column(db.Text,nullable=False)
     state = db.Column(db.Text,nullable=False)
-    latitude = db.Column(db.Text,nullable=False)
-    longitude = db.Column(db.Text,nullable=False)
 
     def serialize(self):
         """Returns a dict representation of an area"""
         return {
             "id":self.id,
-            "zipcode":self.zipcode,
             "city":self.city,
-            "state":self.state,
-            "latitude":self.latitude,
-            "longitude":self.longitude,
+            "state":self.state
         }
     
 

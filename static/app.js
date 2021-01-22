@@ -8,10 +8,6 @@ $(async function() {
 		populateAreasTable(areasList);
 	}
 
-	$('.restaurant-normal').on('click', function() {
-		// toggleDetailedView();
-	});
-
 	$('#areas-table').on('click', '.area-row', function() {
 		window.location = $(this).data('href');
 	});

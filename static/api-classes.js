@@ -14,10 +14,7 @@ class Area {
 	constructor(areaObj) {
 		this.id = areaObj.id;
 		this.city = areaObj.city;
-		this.latitude = areaObj.latitude;
-		this.longitude = areaObj.longitude;
 		this.state = areaObj.state;
-		this.zipcode = areaObj.zipcode;
 	}
 }
 class RestaurantsList {
@@ -42,7 +39,7 @@ class RestaurantsList {
 			body    : dataBody
 		});
 		const data = await response.json();
-
+		console.log(data);
 		const restaurantsList = new RestaurantsList(data);
 
 		return restaurantsList;
@@ -68,7 +65,6 @@ class RestaurantDetail {
 		const data = await response.json();
 		const details = data.details;
 
-		// const photos = details.photo_references.map((photo) => new Photo(photo));
 		const restaurantDetail = new RestaurantDetail(details);
 
 		return restaurantDetail;
