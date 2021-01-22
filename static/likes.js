@@ -1,25 +1,41 @@
-$(async () => {
+$(async function() {
 	// on document load
 	// do stuff
 	let photoCount = 0;
 	let placeId = null;
 	let restaurantDetail = null;
-	const userLikes = await getUserLikes();
+	let userLikes;
+	try {
+		userLikes = await getUserLikes();
+	} catch (e) {
+		alert("Unable to get user's from database");
+		console.log(e);
+	}
 
 	$('#likes-table').append(generateLikesTable());
 	populateLikesTable(userLikes);
 
-	$('#likes-table').on('click', '.like-row', async () => {
+	$('#likes-table').on('click', '.like-row', async function() {
 		placeId = $(this).data('place');
-		restaurantDetail = await RestaurantDetail.getRestaurantDetail(placeId);
-		handleRestaurantDetail(restaurantDetail);
-		handlePhoto(restaurantDetail, photoCount);
+		try {
+			restaurantDetail = await RestaurantDetail.getRestaurantDetail(placeId);
+			handleRestaurantDetail(restaurantDetail);
+			handlePhoto(restaurantDetail, photoCount);
+		} catch (e) {
+			alert('Unable to fetch restaurant information from Google');
+			console.log(e);
+		}
 
 		toggleViews();
 	});
 
 	$('.unlike').on('click', () => {
-		handleUnlike(placeId);
+		try {
+			handleUnlike(placeId);
+		} catch (e) {
+			alert('Unable to send unlike to database');
+			console.log(e);
+		}
 		location.reload();
 	});
 	$('.go-back').on('click', () => {
@@ -33,7 +49,12 @@ $(async () => {
 		if (photoCount >= restaurantDetail.photo_references.length) {
 			photoCount = 0;
 		}
-		handlePhoto(restaurantDetail, photoCount);
+		try {
+			handlePhoto(restaurantDetail, photoCount);
+		} catch (e) {
+			alert('Unable to get photo from Google');
+			console.log(e);
+		}
 	});
 	$('.fas').on('click', (event) => {
 		const direction = $(event.target).hasClass('fa-sort-down') ? 'down' : 'up';

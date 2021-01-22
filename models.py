@@ -104,7 +104,6 @@ class Area(db.Model):
     """Areas where a user swipes in"""
     __tablename__ = "areas"
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
-    # zipcode = db.Column(db.Integer,nullable=False)
     city = db.Column(db.Text,nullable=False)
     state = db.Column(db.Text,nullable=False)
 
