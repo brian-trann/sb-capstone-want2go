@@ -4,3 +4,5 @@
 /__pycache__/
 /static/tmp/
 secrets.py
+__pycache__/app.cpython-37.pyc
+__pycache__/models.cpython-37.pyc
