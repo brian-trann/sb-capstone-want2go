@@ -3,11 +3,12 @@ from helpers import place_search_request , google_details_request, google_photo_
 from models import db, User,Likes, Dislikes, Restaurant, Area, UserAreas
 api = Blueprint("api", __name__, static_folder="static",template_folder="templates")
 
+UNAUTHORIZED_MSG = {"message":"Unauthorized"}
 
 @api.route('/areas', methods=["GET"])
 def get_user_areas():
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     user = User.query.get_or_404(g.user.id)
     serialized = [area.serialize() for area in user.areas]
     return jsonify(areas=serialized)
@@ -15,7 +16,7 @@ def get_user_areas():
 @api.route('/restaurants')
 def get_restaurants_in_area():
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     area = Area.query.get_or_404(session['curr_area'])
     response = place_search_request(city=area.city,state=area.state)
     
@@ -24,19 +25,17 @@ def get_restaurants_in_area():
 @api.route('/restaurants/nextpage', methods=['POST'])
 def get_nextpage():
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     page_token= request.json['next_page_token']
     area = Area.query.get_or_404(session['curr_area'])
-    print('~~~~~~~~~~~~~~~~~')
-    print(page_token)
-    print('~~~~~~~~~~~~~~~~~')
+
     response = google_next_page(pagetoken=page_token,city=area.city,state=area.state)
     return jsonify(response)
 
 @api.route('/restaurant/details', methods=['POST'])
 def get_restaurant_details():
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401    
+        return jsonify(UNAUTHORIZED_MSG),401
     place_id = request.json['restaurantPlaceId']
     response = google_details_request(place_id=place_id)
     return jsonify(response)
@@ -44,7 +43,7 @@ def get_restaurant_details():
 @api.route('/restaurant/details/photo', methods=['POST'])
 def get_photo():
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     photo_reference = request.json['photo_reference']
     response = google_photo_request(photo_reference=photo_reference)
     return jsonify(response)
@@ -52,7 +51,7 @@ def get_photo():
 @api.route('/restaurant/like', methods=["POST"])
 def like_restaurant():
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     google_place_id = request.json['googlePlaceId']
     name = request.json['name']
     address = request.json['address']
@@ -70,7 +69,7 @@ def like_restaurant():
 @api.route('/restaurant/unlike', methods=["POST"])
 def unlike_restaurant():
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     google_place_id = request.json['googlePlaceId']
     restaurant = Restaurant.query.filter(Restaurant.google_place_id == google_place_id, Restaurant.user_id==g.user.id).first()
     db.session.delete(restaurant)
@@ -80,7 +79,7 @@ def unlike_restaurant():
 @api.route('/restaurant/dislike',methods=['POST'])
 def dislike_restaurant():
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     google_place_id = request.json['googlePlaceId']
     name = request.json['name']
     address = request.json['address']
@@ -94,11 +93,11 @@ def dislike_restaurant():
     db.session.commit()
     return jsonify({"restaurant":"disliked"})
     
-@api.route('/user/likes', methods=['POST'])
+@api.route('/user/likes', methods=['GET'])
 def get_user_likes_dislikes():
     '''returns likes and dislikes. to be used for filtering'''
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     
     user = User.query.get_or_404(g.user.id)
     user_likes = [restaurant.google_place_id for restaurant in user.likes]
@@ -110,7 +109,7 @@ def get_user_likes_dislikes():
 def get_user_likes():
     '''returns a serialized list of user's likes'''
     if not g.user:
-        return jsonify({"message":"Unauthorized"}),401
+        return jsonify(UNAUTHORIZED_MSG),401
     user = User.query.get_or_404(g.user.id)
     serialized = [restaurant.serialize() for restaurant in user.likes]
 

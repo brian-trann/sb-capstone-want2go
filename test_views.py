@@ -8,8 +8,8 @@ from models import db, User, Likes, Dislikes, Restaurant, Area, UserAreas
 os.environ['DATABASE_URL'] = "postgresql:///want2go_test_db"
 from app import app, CURR_USER_KEY, CURR_USER_AREA
 
-# app.config['TESTING'] = True
-# app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
+app.config['TESTING'] = True
+app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 app.config['WTF_CSRF_ENABLED'] = False
 
 db.create_all()
