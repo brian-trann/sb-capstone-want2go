@@ -16,7 +16,7 @@ db.create_all()
 
 UNAUTHORIZED = {"message":"Unauthorized"}
 
-class ApiTestCase(TestCase):
+class ApiUnauthorizedTestCase(TestCase):
     """ Test API for Unauthorized user. All response codes should be 401"""
     def setUp(self):
         db.drop_all()
