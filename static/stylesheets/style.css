@@ -13,3 +13,8 @@
 .carousel-control-prev-35{
     width: 30%;
 }
+
+.restaurant-normal{
+    width: 50rem;
+    object-fit: cover;
+}

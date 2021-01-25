@@ -75,7 +75,7 @@ const generateAreasTable = () => {
 	  <tr>
 		<th scope="col">City</th>
 		<th scope="col">State</th>
-		
+		<th scope="col">Delete</th>
 	  </tr>
 	</thead>
 	<tbody class="areas">
