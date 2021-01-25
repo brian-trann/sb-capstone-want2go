@@ -2,6 +2,7 @@
 /private
 /venv/
 /__pycache__/
+__pycache__/
 /static/tmp/
 secrets.py
 __pycache__/app.cpython-37.pyc
