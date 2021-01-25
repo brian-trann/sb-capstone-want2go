@@ -1,5 +1,7 @@
 import requests
-from secrets import PRIVATE_API_KEY
+import os
+# from secrets import PRIVATE_API_KEY
+PRIVATE_API_KEY = os.environ.get('PRIVATE_API_KEY')
 
 def place_search_request(city:str,state:str,key=PRIVATE_API_KEY):
     '''place_search_request() sends a GET request to the Google Place Search API
