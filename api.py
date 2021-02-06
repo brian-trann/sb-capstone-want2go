@@ -93,7 +93,7 @@ def dislike_restaurant():
     db.session.commit()
     return jsonify({"restaurant":"disliked"})
     
-@api.route('/user/likes', methods=['GET'])
+@api.route('/user/likes_dislikes', methods=['GET'])
 def get_user_likes_dislikes():
     '''returns likes and dislikes. to be used for filtering'''
     if not g.user:

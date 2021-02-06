@@ -12,7 +12,7 @@ const getGooglePhoto = async (photoRef) => {
 	return data;
 };
 const getUserLikesDislikes = async () => {
-	const res = await fetch('/api/user/likes');
+	const res = await fetch('/api/user/likes_dislikes');
 	const data = await res.json();
 	const likesDislikes = [ ...data.likes, ...data.dislikes ];
 	return likesDislikes;

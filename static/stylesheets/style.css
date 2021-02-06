@@ -22,3 +22,7 @@
     height: 600px;
     object-fit:cover
 }
+.jumbotron{
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.4) 60%), url('../images/bg-1200-50p-4.png');
+    background-size: cover;
+} 

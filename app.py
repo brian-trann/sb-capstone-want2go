@@ -154,7 +154,7 @@ def restaurant_likes():
     """Table showing all restaurants??? """
     if not g.user:
         return redirect("/")
-    return render_template('likes.html')
+    return render_template('/likes/likes.html')
 
 @app.route('/areas', methods=["GET","POST"])
 def show_areas():
