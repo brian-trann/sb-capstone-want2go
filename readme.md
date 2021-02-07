@@ -1,72 +1,33 @@
-# Want2Go (pending name)
+# want2go
+<img src="./assets/want2go-readme.png" width="800"/>
 
-## Goal:
-The goal of Want2Go is to provide a more intuitive and 'computationally kind' way discovering new places to eat. The two main features of this application is discovery and keeping track of discovered/matched restaurants. 
+## Details
+The goal of Want2Go is to provide a more intuitive and 'computationally kind' way discovering new places to eat. I think that other people's reviews of restaurants may inhibit one's decision of wanting to go to a given place. I think that food is very subjective, and I wanted to make an app that had no stars and reviews. Want2Go helps you keep track of restaurants that you want to go in other cities. Want2Go is a restaurant discovery app and it helps you keep track of the places you want to go. [Heroku Link](https://want2go.herokuapp.com/)
 
-## User base:
-The target demographic are adults, between 18-35 years old.
+## Features:
+* Restaurant discovery: Like and Dislike
+* Discovery areas
+* List of liked restaurants
 
-## Data:
-I plan on using the Google Places API. The API provides all of the necessary information for restaurants, photos, addresses, business hours.
+## API:
+I used the [Google Places API](https://developers.google.com/places/web-service/overview). The Places API provided an easy way to search in an area, retrieve location details, and photos.
 
-## Approach:
-Currently, my database schema only has a Users, Areas, and restaurants table. I may need to add an additional relationship type table, in order to keep the database schema in 3NF or BCNF. I do not foresee any issues with the API I have chosen. The only issues that may come up are from my implementation of this application. The only sensitive information that I will need to store is the password. 
+## Using the App
+### Discovery
+<img src="./assets/likes-01.gif" width="500"/>
 
+### Liked Restaurants
+<img src="./assets/areas-01.gif"  width="500"/>
 
-## Initial Schema Design:
-### users table
-|    | user_account |   | 
-|----|--------------|---| 
-| PK | id           |   | 
-|    | name         |   | 
-|    | email        |   | 
-|    | password     |   | 
-| FK | likes_id     |   | 
-| FK | dislikes_id  |   | 
-| FK | areas_id     |   |
-
-### likes
-|    | likes          |   |
-|----|----------------|---|
-| PK | id             |   |
-| FK | user_id        |   |
-| FK | restaurant_id  |   |
-
-### dislikes
-|    | dislikes       |   |
-|----|----------------|---|
-| PK | id             |   |
-| FK | user_id        |   |
-| FK | restaurant_id  |   |
-
-### areas
-|    | area    |   |
-|----|---------|---|
-| PK | id      |   |
-|    | zipcode |   |
-|    | city    |   |
-| FK | user_id |   |
-
-### restaurants
-|    | restaurants       |   |
-|----|-------------------|---|
-| PK | id                |   |
-|    | name              |   |
-|    | address           |   |
-|    | city              |   |
-|    | state             |   |
-|    | description       |   |
-|    | google_place_id   |   |
-|    | fetched_timestamp |   |
-
-
-## User Flow & Sequence Diagrams:
-
-* Basic user flows are in /assets 
-  * Does not include:
-    * Account settings
-    * "Areas" tab
 
 ## Future goals:
-* additional toggle switches for users to specify restaurant search: corporate/non corporate, open now, etc.
-* React native/ Mobile functionality (with swiping)
+* additional toggle switches for users to specify restaurant search: corporate/non corporate
+* Like / Dislike animations
+* Delete account ?
+
+### Technology Stack:
+* Python
+* PostgreSQL
+* Javascript 
+
+
