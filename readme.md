@@ -13,6 +13,8 @@ The goal of Want2Go is to provide a more intuitive and 'computationally kind' wa
 I used the [Google Places API](https://developers.google.com/places/web-service/overview). The Places API provided an easy way to search in an area, retrieve location details, and photos.
 
 ## Using the App
+When first using the app, a user will be asked to enter in an area to search in. A user will be able to add new search areas by clicking the `Areas` button in the navbar. After an area is entered, the user will be redirected to discover new restaurants. Liked restaurants will be found by clicking the `Likes` button in the navbar.
+
 ### Discovery
 <img src="./assets/likes-01.gif" width="500"/>
 
@@ -23,9 +25,9 @@ I used the [Google Places API](https://developers.google.com/places/web-service/
 ## Future goals:
 * additional toggle switches for users to specify restaurant search: corporate/non corporate
 * Like / Dislike animations
-* Delete account ?
+* Delete account
 
-### Technology Stack:
+## Technology Stack:
 * Python
 * PostgreSQL
 * Javascript 
